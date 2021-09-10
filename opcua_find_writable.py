@@ -5,12 +5,9 @@ from opcua import ua
 
 if __name__ == "__main__":
 	if len(sys.argv) != 2:
-		print("Tool to find writable variables on OPC UA servers.")
-		print("GitHub: https://github.com/gsuberland/opcua_find_writable")
-		print("")
 		print("Usage: python3 opcua_find_writable.py [server]")
 		print("")
-		print("    server: OPC string, e.g. opc.tcp://10.1.2.3:4840/")
+		print("    server: OCP string, e.g. ocp.tcp://192.168.1.2:4840/")
 		print("")
 		exit()
 	connectString = sys.argv[1]
@@ -38,6 +35,13 @@ if __name__ == "__main__":
 			children = node.get_children()
 			walk_nodes.extend(children)
 
+		opcua = client.get_node("ns=4;i=21007")
+		print("Children of 21007 are: ", opcua.get_children())
+		children = opcua.get_children()
+		for child in children:
+			print(client.get_node(child).get_browse_name())
 		print("Done.");
+
+		embed()
 	finally:
 		client.disconnect()
